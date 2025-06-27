@@ -1,106 +1,55 @@
 import React, { useState } from "react";
 
-// 1. Counter Component
-function Counter() {
-  const [count, setCount] = useState(0);
+function App() {
+  
+  const [todos, setTodos] = useState([]);
 
-  return (
-    <div style={{ marginBottom: "20px" }}>
-      <h3>1. Counter</h3>
-      <p>Count: {count}</p>
-      <button onClick={() => setCount(count + 1)}>Increase Count</button>
-    </div>
-  );
-}
+  const [inputValue, setInputValue] = useState("");
 
-// 2. Toggle Message Component
-function ToggleMessage() {
-  const [message, setMessage] = useState("Hello");
+  
+  const handleAddTodo = () => {
+    if (inputValue.trim() !== "") {
+      setTodos([...todos, inputValue.trim()]);
+      setInputValue("");
+    }
+  };
 
-  const toggle = () => {
-    setMessage((prev) => (prev === "Hello" ? "Welcome Back" : "Hello"));
+  const handleDeleteTodo = (index) => {
+    const newTodos = todos.filter((_, i) => i !== index);
+    setTodos(newTodos);
   };
 
   return (
-    <div style={{ marginBottom: "20px" }}>
-      <h3>2. Toggle Message</h3>
-      <p>{message}</p>
-      <button onClick={toggle}>Toggle</button>
-    </div>
-  );
-}
-
-// 3. Parent and Child Component
-function ChildComponent({ message }) {
-  return (
-    <div>
-      <p>{message}</p>
-    </div>
-  );
-}
-
-function ParentComponent() {
-  return (
-    <div style={{ marginBottom: "20px" }}>
-      <h3>3. Parent ➝ Child</h3>
-      <ChildComponent message="Good morning" />
-    </div>
-  );
-}
-
-// 4. GrandParent ➝ Parent ➝ Child
-function Child({ message }) {
-  return <p>{message}</p>;
-}
-
-function Parent({ message }) {
-  return <Child message={message} />;
-}
-
-function GrandParent() {
-  return (
-    <div style={{ marginBottom: "20px" }}>
-      <h3>4. GrandParent ➝ Parent ➝ Child</h3>
-      <Parent message="Hello from GrandParent" />
-    </div>
-  );
-}
-
-// 5. Render List of Names
-function NameList() {
-  const names = ["John", "Jane", "Alex"];
-  return (
-    <div>
-      <h3>5. Name List</h3>
-      <ul>
-        {names.map((name, index) => (
-          <li key={index}>{name}</li>
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h2>Todo App</h2>
+      <div>
+        <input
+          type="text"
+          placeholder="Enter todo..."
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+        />
+        <button onClick={handleAddTodo}>Add Todo</button>
+      </div>
+      <ul style={{ listStyleType: "none", padding: 0 }}>
+        {todos.map((todo, index) => (
+          <li
+            key={index}
+            style={{
+              marginTop: "10px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "10px"
+            }}
+          >
+            {todo}
+            <button onClick={() => handleDeleteTodo(index)}>Delete</button>
+          </li>
         ))}
       </ul>
     </div>
   );
 }
-
-// Main App Component
-function App() {
-  return (
-    <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      <Counter />
-      <ToggleMessage />
-      <ParentComponent />
-      <GrandParent />
-      <NameList />
-    </div>
-  );
-}
-
-
-
-
-
-// 
-
-
-
 
 export default App;
